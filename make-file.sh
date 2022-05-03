@@ -62,7 +62,7 @@ After=multi-user.target
 User=pi
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=/home/pi/.Xauthority
-ExecStart=/usr/bin/python3 /home/pi/karaokeApplication/vtokke.py
+ExecStart=/usr/bin/python3 /home/pi/vtokke/vtokke.py
 Restart=always
 RestartSec=20s
 KillMode=process
@@ -81,7 +81,7 @@ After=multi-user.target
 
 [Service]
 User=pi
-ExecStart=/usr/bin/python3 /home/pi/karaokeApplication/catapy.py
+ExecStart=/usr/bin/python3 /home/pi/vtokke/catapy.py
 Restart=always
 RestartSec=10s
 KillMode=process
@@ -115,6 +115,20 @@ sudo ufw enable
 
 
 echo "E NESSA LOUCURA, DE DIZER QUE NÃO TE QUERO...."
+
+
+
+# SYNERGY
+# add coisa pra rodar on startup
+# sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+# só adicionar na ultima linha o seguinte pra auto-startar o synergy
+# synergy --name raspberrypi DESKTOP-LPQ7GQU.local
+
+
+# AUTOSTART KARAOKE
+# python3 /home/pi/vtokke/catapy.py
+# python3 /home/pi/vtokke/vtokke.py
+
 
 
 
