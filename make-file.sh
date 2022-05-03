@@ -41,8 +41,12 @@ echo "Installing Flask"
 pip3 install flask
 
 
-echo "Installing Youtube DL"
-pip3 install youtube_dl
+# echo "Installing Youtube DL"
+# pip3 install youtube_dl
+
+
+echo "Installing Youtube DL mais rapido"
+pip3 install -U yt-dlp
 
 
 #forçar saída de fone
@@ -94,14 +98,32 @@ sudo systemctl enable karaoke.service
 
 sudo systemctl enable catapy.service
 
+# instalar abridor deporta
+sudo apt-get install ufw
+
+# abrir porta 5000
+sudo ufw allow 5000
+
+# ver status se o ufw ta rodando
+# sudo ufw status
+
+# ligar abridor de porta
+sudo ufw enable 
+
+
+
+
+
+echo "E NESSA LOUCURA, DE DIZER QUE NÃO TE QUERO...."
+
+
+
+
+
 #mydir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
 
 #sudo cp ../
 
-
-
-
-echo "DIZ QUE EH VERDADE, QUE TEM SAUDAAAADEEE!"
 
 
 
