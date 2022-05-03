@@ -30,15 +30,9 @@ import vlc
 import sys
 import pandas as pd
 from subprocess import check_output
-
-if sys.version_info[0] < 3:
-    import Tkinter as Tk
-    from Tkinter import ttk
-    from Tkinter.filedialog import askopenfilename
-else:
-    import tkinter as Tk
-    from tkinter import ttk
-    from tkinter.filedialog import askopenfilename
+import tkinter as Tk
+from tkinter import ttk
+from tkinter.filedialog import askopenfilename
 
 # import standard libraries
 import os
@@ -46,6 +40,7 @@ import pathlib
 from threading import Thread, Event
 import time
 import platform
+import guigolock as ggl
 
 current_location = os.path.dirname(os.path.abspath(__file__)) + '/'
 
@@ -56,7 +51,7 @@ if os.path.exists("catalogo_custom.csv"):
 else:
     dt = df
 dt["code"] = pd.to_numeric(dt["code"])
-fila = pd.DataFrame(columns=['codigo'])
+pd.DataFrame(columns=['codigo', 'nome','artista', 'responsavel']).to_csv('./filomena')
 
 
 class Player(Tk.Frame):
@@ -64,7 +59,6 @@ class Player(Tk.Frame):
     """
         
     def __init__(self, parent, title=None):
-        global fila
         Tk.Frame.__init__(self, parent)
         self.parent = parent
 
@@ -81,7 +75,10 @@ class Player(Tk.Frame):
         ctrlpanel = ttk.Frame(self.parent)
         lab = ttk.Label(ctrlpanel, text=" Codigo Musica: ")
         lab1 = ttk.Label(ctrlpanel, text="Proxima Musica: ")
-        lab3 = ttk.Label (ctrlpanel, text=check_output(['hostname', '--all-ip-addresses']).split()[0])
+        if os.name == "nt":
+            lab3 = ttk.Label(ctrlpanel, text=check_output('ipconfig | find "IPv4"', shell = True).split()[-1])
+        else:
+            lab3 = ttk.Label(ctrlpanel, text=check_output(['hostname', '--all-ip-addresses']).split()[0])
         codigo = ttk.Entry(ctrlpanel)
         codigo.focus_force()
         lab3.pack(side=Tk.LEFT)
@@ -94,7 +91,6 @@ class Player(Tk.Frame):
         ctrlpanel2.pack(side=Tk.BOTTOM,fill=Tk.X)
 
         def addList(btn):
-            global fila
             global dt
             # if a file is already running, then stop it.
             if codigo.get() != '':
@@ -107,33 +103,55 @@ class Player(Tk.Frame):
                 dt["code"] = pd.to_numeric(dt["code"])
                 if (any(dt.code == int(codigo.get()))):
                     print(dt[dt.code == int(codigo.get())])
-                    fila = fila.append({ 'codigo' : int(codigo.get())} , ignore_index=True)
+                    while ggl.check_free('./filomena', 'vtk') != True:
+                        print('filomena presa')
+                    fila = pd.read_csv('./filomena')
+                    fila = fila.append({'codigo':codigo.get(),'nome':dt[dt.code == int(codigo.get())].iloc[0,3],'artista': dt[dt.code == int(codigo.get())].iloc[0,2], 'responsavel':'vtk'}, ignore_index=True)
+                    fila.to_csv('./filomena')
+                    while ggl.release('./filomena', 'vtk') != True:
+                        print('incapaz de liberar filomena')
                     print(fila)
                     if len(fila.index)== 1:
-                        lab1.configure(text = "Proxima Musica - " + dt[dt.code == fila.iloc[0,0]].iloc[0,3] + " - " + dt[dt.code == fila.iloc[0,0]].iloc[0,2])
+                        lab1.configure(text = "Proxima Musica - " + fila['nome'].iloc[0] + " - " + fila['artista'].iloc[0])
                 else:
                     print("Musica nao esta no catalogo")
             codigo.delete(0,'end')
                 
                 
         def onopen(btn):
-            global fila
             # if a file is already running, then stop it.
             self.player.stop()
-            print(fila)
-            title = dt[dt.code == fila.iloc[0,0]].iloc[0,1]
+            while ggl.check_free('./filomena', 'vtk') != True:
+                print('filomena presa')
+            fila = pd.read_csv('./filomena')
+            frst = fila.iloc[0]
             fila = fila.iloc[1:]
-            if len(fila.index)>= 1:
-                lab1.configure(text = "Proxima Musica - " + dt[dt.code == fila.iloc[0,0]].iloc[0,3] + " - " + dt[dt.code == fila.iloc[0,0]].iloc[0,2])
+            fila = fila.reset_index(drop=True)
+            fila.to_csv('./filomena')
+            while ggl.release('./filomena', 'vtk') != True:
+                print('incapaz de liberar filomena')
+            print(fila)
+            if len(fila.index) > 1:
+                lab1.configure(text = "Proxima Musica - " + fila['nome'].iloc[0] + " - " + fila['artista'].iloc[0])
+            elif len(fila.index) == 1:
+                lab1.configure(text = "Proxima Musica - " + fila['nome'] + " - " + fila['artista'])
             else:
                 lab1.configure(text = "Proxima Musica: Nenhuma")
-            if os.path.exists("/media/pi/Elements/karaoke/musicas/" + title):
-                Media = self.Instance.media_new("/media/pi/Elements/karaoke/musicas/" + title)
+            if os.path.exists("/media/pi/Elements/karaoke/musicas/" + str(frst['codigo']).zfill(5) + '.mp4'):
+                Media = self.Instance.media_new("/media/pi/Elements/karaoke/musicas/" + str(frst['codigo']).zfill(5) + '.mp4')
                 self.player.set_media(Media)
                 if platform.system() == 'Windows':
                     self.player.set_hwnd(self.GetHandle())
                 else:
                     self.player.set_xwindow(self.GetHandle()) # this line messes up windows
+                self.player.play()
+            elif os.path.exists("./musicas/" + str(frst['codigo']).zfill(5) + '.mp4'):
+                Media = self.Instance.media_new("./musicas/" + str(frst['codigo']).zfill(5) + '.mp4')
+                self.player.set_media(Media)
+                if platform.system() == 'Windows':
+                    self.player.set_hwnd(self.GetHandle())
+                else:
+                    self.player.set_xwindow(self.GetHandle())  # this line messes up windows
                 self.player.play()
             else:
                 print("Musica no catalogo porem arquivo .mp4 nao encontrado")
