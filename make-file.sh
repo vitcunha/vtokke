@@ -125,6 +125,13 @@ echo "E NESSA LOUCURA, DE DIZER QUE NÃO TE QUERO...."
 # synergy --name raspberrypi DESKTOP-LPQ7GQU.local
 
 
+# add synergy ao crontab
+echo "$(echo '@reboot synergy --name raspberrypi DESKTOP-LPQ7GQU.local' ; crontab -l 2>&1)" | crontab -
+
+
+
+
+
 # AUTOSTART KARAOKE
 # python3 /home/pi/vtokke/catapy.py
 # python3 /home/pi/vtokke/vtokke.py
