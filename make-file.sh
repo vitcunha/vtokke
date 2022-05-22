@@ -99,7 +99,7 @@ sudo systemctl enable karaoke.service
 sudo systemctl enable catapy.service
 
 # instalar abridor deporta
-sudo apt-get install ufw
+sudo apt-get install ufw -y
 
 # abrir porta 5000
 sudo ufw allow 5000
@@ -114,15 +114,8 @@ sudo ufw enable
 
 
 
-echo "E NESSA LOUCURA, DE DIZER QUE NÃO TE QUERO...."
 
 
-
-# SYNERGY
-# add coisa pra rodar on startup
-# sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
-# só adicionar na ultima linha o seguinte pra auto-startar o synergy
-# synergy --name raspberrypi DESKTOP-LPQ7GQU.local
 
 
 # add synergy ao crontab
@@ -131,10 +124,24 @@ echo "$(echo '@reboot synergy --name raspberrypi DESKTOP-LPQ7GQU.local' ; cronta
 
 
 
+echo "E NESSA LOUCURA, DE DIZER QUE NÃO TE QUERO...."
+
+
+
 
 # AUTOSTART KARAOKE
 # python3 /home/pi/vtokke/catapy.py
 # python3 /home/pi/vtokke/vtokke.py
+
+
+
+
+
+# SYNERGY
+# add coisa pra rodar on startup
+# sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+# só adicionar na ultima linha o seguinte pra auto-startar o synergy
+# synergy --name raspberrypi DESKTOP-LPQ7GQU.local
 
 
 
