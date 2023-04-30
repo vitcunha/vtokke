@@ -18,6 +18,8 @@ sudo apt install git
 # sudo sh make-file.sh
 
 
+
+
 # _________________________
 
 echo "Installing Python3"
@@ -124,15 +126,15 @@ sudo ufw enable
 
 
 
-# install synergy
-sudo wget "https://api2.prod.symless.com/aws-downloads/synergy/v1-core-standard/1.14.6-snapshot.88fdd263/synergy_1.14.6-snapshot.88fdd263_raspios_armhf.deb"
-sudo tar  -xzf synergy_1.14.6-snapshot.88fdd263_raspios_armhf.deb
+# install Synergy
+sudo dpkg -i ./synergy_1.14.6-snapshot.88fdd263_raspios_armhf.deb
 
+# you have to run Synergy manually here, login, connect the first time.
 
 
 
 # add synergy ao crontab
-echo "$(echo '@reboot synergy --name raspberrypi DESKTOP-LPQ7GQU.local' ; crontab -l 2>&1)" | crontab -
+echo "$(echo '@reboot ss' ; crontab -l 2>&1)" | crontab -
 
 
 
