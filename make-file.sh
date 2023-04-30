@@ -1,12 +1,24 @@
 #!/bin/bash
 
+### Stuff that should be installed before everything else ###
 
 # ubuntu
 echo "Updating Packages"
 sudo apt-get update  # To get the latest package lists
 sudo apt-get install software-properties-common -y
-sudo apt-add-repository universe
+sudo apt-add-repository universe -y
 
+echo " Installing Git"
+sudo apt install git
+
+
+# download this repository with this commands - 
+# git clone 
+# cd vtokke
+# sudo sh make-file.sh
+
+
+# _________________________
 
 echo "Installing Python3"
 sudo apt install python3 -y
