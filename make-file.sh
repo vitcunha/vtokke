@@ -18,10 +18,6 @@ sudo apt install git
 # sudo sh make-file.sh
 
 
-
-
-# _________________________
-
 echo "Installing Python3"
 sudo apt install python3 -y
 
@@ -128,20 +124,18 @@ sudo ufw enable
 
 # install Synergy
 sudo dpkg -i ./synergy_1.14.6-snapshot.88fdd263_raspios_armhf.deb
-
 # you have to run Synergy manually here, login, connect the first time.
+
+# SYNERGY
+# add coisa pra rodar on startup
+# sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
+# só adicionar na ultima linha o seguinte pra auto-startar o synergy
+# /usr/bin/synergyc -f DESKTOP-LPQ7GQU.local
 
 
 
 # add synergy ao crontab
-echo "$(echo '@reboot ss' ; crontab -l 2>&1)" | crontab -
-
-
-
-
-echo "E NESSA LOUCURA, DE DIZER QUE NÃO TE QUERO...."
-
-
+# 	echo "$(echo '@reboot ss' ; crontab -l 2>&1)" | crontab -
 
 
 # AUTOSTART KARAOKE
@@ -149,14 +143,18 @@ echo "E NESSA LOUCURA, DE DIZER QUE NÃO TE QUERO...."
 # python3 /home/pi/vtokke/vtokke.py
 
 
+echo "E NESSA LOUCURA, DE DIZER QUE NÃO TE QUERO...."
 
 
 
-# SYNERGY
-# add coisa pra rodar on startup
-# sudo nano /etc/xdg/lxsession/LXDE-pi/autostart
-# só adicionar na ultima linha o seguinte pra auto-startar o synergy
-# synergy --name raspberrypi DESKTOP-LPQ7GQU.local
+
+
+
+
+
+
+
+
 
 
 

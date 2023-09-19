@@ -2,10 +2,18 @@
 
 # Derrow rPI setup
 
+
+# Pre-Setup
+sudo raspi-config
+# Interface Options > enable SSH
+# if Using CC1101 Module > enable SPI Interface.
+
 # Install WiringPi
 wget https://github.com/WiringPi/WiringPi/releases/download/2.61-1/wiringpi-2.61-1-armhf.deb
+sudo dpkg -i wiringpi-2.61-1-armhf.deb
 
 
+# Install RPITX
 mkdir rpitx
 cd rpitx
 mkdir src
@@ -13,7 +21,11 @@ cd src
 git clone https://github.com/F5OEO/librpitx
 cd librpitx/src
 make
+
+
+
 cd ~
+
 
 
 # Install Blootooth Libraries
@@ -62,8 +74,6 @@ tar xvf rfcomm-server_v146PiPi4.tar
 # RPi 3-
 # wget -O rfcomm-server_v146.tar https://www.dropbox.com/s/tdmtaoi0crc73x9/rfcomm-server_v146.tar?dl=1
 # tar xvf rfcomm-server_v146.tar
-
-
 
 
 # Run!
